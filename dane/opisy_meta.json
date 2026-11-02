@@ -1,0 +1,108 @@
+{
+ "model": "muse-spark-1.3",
+ "cennik": {
+  "input_usd_1m": 1.25,
+  "output_usd_1m": 4.25,
+  "zrodlo": "dev.meta.ai/docs/pricing-rate-limits, odczyt 01.11.2026",
+  "tryb": "standard"
+ },
+ "data": "2026-11-01T20:30:59",
+ "dzialki": {
+  "90/8": {
+   "tekst": "Działka 90/8 w Mąkownicy na ortofoto z 28.03.2025 wygląda na odkrytą glebę, ale to zdjęcie nie pokazuje stanu na dziś, natomiast NDVI z 26.10.2026 (średnia 0.791 ±0.005, zakres 0.749–0.829) i NDRE (średnia 0.521 ±0.003, zakres 0.500–0.547) są wysokie i dość wyrównane przy 0.0% chmur nad działką, przy prawie płaskiej rzeźbie 172.2–173.2 m, a kontrola z 23.10.2026 (NDVI 0.790, NDRE 0.513) jest prawie taka sama. Pewność jest ograniczona, bo działka ma tylko 0.5029 ha (50 pikseli 10 m, gdzie 1 piksel to 0,01 ha = 1.99% działki), aż 74.0% to piksele brzegowe, a NDRE jest grubsze z powodu pasma B05 20 m. W polu warto sprawdzić, czy pokrywa roślinna jest rzeczywiście zwarta i równa wzdłuż działki, zwłaszcza przy wschodniej granicy z drogą, oraz czy nie widać kolein lub placowego nie-wschodu — to tylko obraz satelitarny, nie badanie gleby.\n\nEN: The 28.03.2025 orthophoto shows bare soil, but it is old and does not show the current state, while NDVI on 26.10.2026 (mean 0.791 ±0.005, range 0.749–0.829) and NDRE (mean 0.521 ±0.003, range 0.500–0.547) are high and fairly uniform with 0.0% cloud over the parcel, nearly flat terrain of 172.2–173.2 m, and the 23.10.2026 check (NDVI 0.790, NDRE 0.513) is almost the same. Confidence is limited because the parcel is only 0.5029 ha (50 x 10 m pixels, 1 pixel = 1.99% of the parcel), 74.0% are edge pixels, and NDRE is coarser due to 20 m B05. In the field it is worth checking if cover is truly even along the strip, especially near the eastern road boundary, and looking for tracks or uneven emergence — this is only satellite imagery, not a soil test.",
+   "czas_s": 8.4,
+   "usage": {
+    "completion_tokens": 1977,
+    "prompt_tokens": 1192,
+    "total_tokens": 3169,
+    "completion_tokens_details": {
+     "reasoning_tokens": 1413
+    },
+    "prompt_tokens_details": {
+     "cached_tokens": 1123
+    }
+   },
+   "koszt_usd": 0.009892,
+   "model": "muse-spark-1.3",
+   "id": "chatcmpl-01a19898-1845-753e-94bd-a3f9d9944abc",
+   "prompt_znakow": 1060
+  },
+  "90/12": {
+   "tekst": "A) Działka 90/12 (0.5168 ha) w Panelu 1 jest pokazana na archiwalnym ortofoto z 28.03.2025 z żółtą granicą ULDK i maskami SAM 3.1 (trawa, odkryta gleba, budynek, droga), więc nie pokazuje ono stanu dzisiejszego, a Panele 2 i 3 to NDVI i NDRE z Sentinel-2 L2A z 26.10.2026 przy zachmurzeniu 0,0% nad działką. Średnie NDVI wynosi 0.796 ±0.004 (95% CI) w zakresie 0.766–0.832, a średnie NDRE wynosi 0.550 ±0.009 w zakresie 0.500–0.634, co jest bliskie kontroli z 23.10.2026 (NDVI 0.785, NDRE 0.516). Pewność jest ograniczona, bo mamy tylko 52 piksele 10 m, aż 71.2% to piksele brzegowe, a 1 piksel to 0,01 ha czyli 1.93% działki, a NDRE jest grubsze bo pasmo B05 ma 20 m; rzeźba z NMT to 168.7–170.3 m n.p.m. (różnica 1.6 m). W polu warto sprawdzić przebieg granicy i jednorodność roślinności, zwłaszcza na brzegach i w miejscach różnic NDVI/NDRE, pamiętając że to nie jest badanie gleby.\n\nEN: Parcel 90/12 (0.5168 ha) is shown on archival orthophoto from 28.03.2025 with yellow ULDK border and SAM 3.1 masks, so it does not show current state, while Panels 2-3 show Sentinel-2 L2A NDVI and NDRE from 26.10.2026 with 0.0% cloud over the parcel. Mean NDVI is 0.796 ±0.004 (95% CI) with range 0.766–0.832 and mean NDRE is 0.550 ±0.009 with range 0.500–0.634, close to the 23.10.2026 check (NDVI 0.785, NDRE 0.516). Confidence is limited because there are only 52 10-m pixels, 71.2% are edge pixels with 1 pixel equal to 0.01 ha or 1.93% of the parcel, NDRE is coarser because B05 is 20 m, and NMT relief is 168.7–170.3 m (1.6 m difference); in the field it is worth verifying the boundary and vegetation uniformity, especially at edges, noting this is not a soil test.",
+   "czas_s": 9.1,
+   "usage": {
+    "completion_tokens": 2320,
+    "prompt_tokens": 1192,
+    "total_tokens": 3512,
+    "completion_tokens_details": {
+     "reasoning_tokens": 1698
+    },
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "koszt_usd": 0.01135,
+   "model": "muse-spark-1.3",
+   "id": "chatcmpl-01a19898-3b95-7288-af0c-929fca0e0216",
+   "prompt_znakow": 1061
+  },
+  "92/6": {
+   "tekst": "Ortofoto z 28.03.2025 pokazuje działkę 92/6 (0,6792 ha) jako pole z odkrytą glebą w żółtej granicy ULDK, a maski SAM 3.1 (trawa, odkryta gleba, budynek, droga) to tylko kontekst spoza działki, bo zdjęcie jest archiwalne i nie pokazuje stanu dzisiejszego. Na scenie Sentinel-2 L2A z 26.10.2026 przy chmurach 0,0% nad działką NDVI ma średnią 0,450 ±0,021 przy zakresie 0,329–0,685, a NDRE 0,289 ±0,013 przy zakresie 0,236–0,446, blisko kontroli z 23.10.2026 (NDVI 0,430, NDRE 0,262), ale jest to niepewne wprost, bo jest tylko 67 pikseli 10 m, piksele brzegowe to 43,3%, a NDRE jest grubsze przez B05 20 m. W polu warto sprawdzić, czy jaśniejsze / niższe wartości wewnątrz działki i przy granicach odpowiadają wschodom, koleinom lub mozaice roślinności, pamiętając że rzeźba NMT to 170,8–172,2 m n.p.m. (różnica 1,4 m) i to nie jest badanie gleby.\n\nEN: Panel 1 is the 28.03.2025 orthophoto showing plot 92/6 as bare-soil field inside the ULDK border, with SAM 3.1 masks only as outside context, so it does not show today's state. Panels 2-3 from Sentinel-2 L2A on 26.10.2026 with 0.0% cloud over the plot give NDVI mean 0.450 ±0.021, range 0.329–0.685, and NDRE mean 0.289 ±0.013, range 0.236–0.446, close to the 23.10.2026 check (NDVI 0.430, NDRE 0.262), but this is explicitly uncertain because there are only 67 10-m pixels, 43.3% are edge pixels, and NDRE is coarser due to 20-m B05. On the ground it is worth checking whether the lower values inside and near the borders correspond to emergence, tracks or vegetation patchiness, noting NMT relief is only 170.8–172.2 m (1.4 m difference) and this is not a soil test.\n",
+   "czas_s": 7.5,
+   "usage": {
+    "completion_tokens": 1674,
+    "prompt_tokens": 1363,
+    "total_tokens": 3037,
+    "completion_tokens_details": {
+     "reasoning_tokens": 1099
+    },
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "koszt_usd": 0.008818,
+   "model": "muse-spark-1.3",
+   "id": "chatcmpl-01a19898-57b3-73be-86fa-f397ab744a45",
+   "prompt_znakow": 1060
+  },
+  "92/10": {
+   "tekst": "Na scenie Sentinel-2 L2A z 26.10.2026 przy 0,0% chmur nad działką 92/10 (2,8833 ha) średnia NDVI wynosi 0,402 (zakres 0,212–0,768, 292 pikseli 10 m), a NDRE 0,254 (zakres 0,144–0,544), z wyraźnie niższymi wartościami w pasie środkowym i południowym działki. Pomiar kontrolny z 23.10.2026 (NDVI 0,389, NDRE 0,229) jest zbliżony, a rzeźba terenu jest płaska (170,8–173,0 m n.p.m.), więc obraz jest spójny, ale to tylko sygnał satelitarny, nie badanie gleby. Ortofoto z 28.03.2025 z granicą ULDK i maskami SAM 3.1 pokazuje jedynie historyczny układ pola względem drogi i budynków i nie opisuje stanu z października 2026. W polu warto sprawdzić, co faktycznie odpowiada strefie niskich wartości oraz strefom przy granicy, bo 31,8% to piksele brzegowe mieszane z otoczeniem, a NDRE jest grubsze z powodu pasma B05 20 m, więc dokładny przebieg granic jest niepewny.\n\nEN: On the cloud-free (0.0% over the parcel) Sentinel-2 L2A scene of 26.10.2026 parcel 92/10 shows mean NDVI 0.402 (range 0.212–0.768, 292 10-m pixels) and mean NDRE 0.254 (range 0.144–0.544), with lower values concentrated in the central-southern band and higher values to the northeast, close to the 23.10.2026 check (NDVI 0.389, NDRE 0.229). The 28.03.2025 orthophoto with ULDK border and SAM 3.1 masks only shows historic layout relative to the road and buildings, not the October 2026 condition. In the field it is worth checking ground cover in the low-value zone and near boundaries, as 31.8% are edge pixels mixed with surroundings and NDRE is coarser due to 20-m B05, so zone edges are uncertain and this is not a soil test.",
+   "czas_s": 9.3,
+   "usage": {
+    "completion_tokens": 2120,
+    "prompt_tokens": 1321,
+    "total_tokens": 3441,
+    "completion_tokens_details": {
+     "reasoning_tokens": 1589
+    },
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "koszt_usd": 0.010661,
+   "model": "muse-spark-1.3",
+   "id": "chatcmpl-01a19898-7d32-76cb-8b17-0a6fe55b1140",
+   "prompt_znakow": 1062
+  },
+  "92/11": {
+   "tekst": "Działka 92/11 (0,3025 ha) w Panelu 1 ma granicę ULDK na ortofoto z 28.03.2025 z maskami SAM 3.1, które nie pokazują stanu na dziś, a Panele 2 i 3 ze sceny Sentinel-2 L2A z 26.10.2026 pokazują NDVI średnio 0.431 ±0.040 (95% CI) i NDRE średnio 0.264 ±0.020 przy 0.0% chmur nad działką. Wynik jest niepewny, bo to tylko 31 pikseli 10 m, 1 piksel to 0,01 ha czyli 3.31% działki, aż 58.1% to piksele brzegowe, a NDRE jest grubsze bo B05 ma 20 m, przy zakresie NDVI 0.280–0.651 i NDRE 0.189–0.397. Rzeźba jest prawie płaska 172.5–172.8 m z różnicą 0.3 m, a wartości są bliskie kontroli z 23.10.2026 (NDVI 0.415, NDRE 0.229) — to nie jest badanie gleby, więc w polu warto sprawdzić czy słabsze miejsca odpowiadają różnicom w okrywie roślinnej lub śladom przejazdu.\n\nEN: Panel 1 shows the ULDK boundary on the 28.03.2025 orthophoto with SAM 3.1 masks, which does not show current state, while Panels 2 and 3 from the 26.10.2026 Sentinel-2 L2A scene show mean NDVI 0.431 ±0.040 (95% CI) and mean NDRE 0.264 ±0.020 with 0.0% clouds over the parcel. The result is uncertain because there are only 31 10-m pixels, 1 pixel is 0.01 ha or 3.31% of the 0.3025 ha parcel, 58.1% are edge pixels, and NDRE is coarser because B05 is 20 m, with NDVI range 0.280–0.651 and NDRE range 0.189–0.397. Relief is almost flat at 172.5–172.8 m with 0.3 m difference and values are close to the 23.10.2026 check (NDVI 0.415, NDRE 0.229) — this is not a soil test, so in the field it is worth checking if lower-value spots match differences in plant cover or tracks.",
+   "czas_s": 7.1,
+   "usage": {
+    "completion_tokens": 1686,
+    "prompt_tokens": 1347,
+    "total_tokens": 3033,
+    "completion_tokens_details": {
+     "reasoning_tokens": 1103
+    },
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "koszt_usd": 0.008849,
+   "model": "muse-spark-1.3",
+   "id": "chatcmpl-01a19898-9943-700d-a2be-3f87aa0e730f",
+   "prompt_znakow": 1061
+  }
+ },
+ "koszt_razem_usd": 0.04957
+}
