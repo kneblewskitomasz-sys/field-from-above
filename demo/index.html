@@ -274,7 +274,7 @@ function pokazS155A(d){
       h += `<p><b>${ter.status || t("s155a_missing")}</b> — ${fmt(ter.brak_pct,1)}% ${t("s155a_points")}</p>`;
     }
   }
-  h += `<p><b>${t("s155a_werdykt")}: ${s.werdykt}</b> — ${pl ? s.werdykt_pl : s.werdykt_en}.</p>`;
+  h += `<p><b>${t("s155a_werdykt")}: ${pl ? s.werdykt : ({"WRACA":"RETURNS","NIE WRACA":"DOES NOT RETURN","ZA MAŁO PIKSELI":"TOO FEW PIXELS"}[s.werdykt] || s.werdykt)}</b> — ${pl ? s.werdykt_pl : s.werdykt_en}.</p>`;
   const sl = s.slabe || {}, pr = sl.przypadek || {};
   if (sl.odsetek_w_3z4 !== null && sl.odsetek_w_3z4 !== undefined) {
     h += `<p class="malo">${sl.liczba_pikseli_w_3z4}/${sl.n_wspolnych} ${t("s155a_in_3of4")} ` +
