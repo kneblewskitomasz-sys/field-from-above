@@ -7,7 +7,7 @@ cloud-masked NDVI/NDRE map, an orthophoto with segmentation masks, and a short
 note that says what was measured, how coarse it is, and where to walk first.
 It does not pretend to be a soil test.
 
-Built for the Meta Global AI Developer Hackathon (27 October - 4 November 2026),
+Built for the Meta Global AI Developer Hackathon (26 October - 4 November 2026),
 theme **Build for Your World**.
 
 ---
@@ -58,7 +58,7 @@ Requirements: **Python 3.12** and a modern browser. The demo page and the chain
 stub need no network, no GPU and no paid API.
 
 ```bash
-git clone <repository-url> pole-z-gory
+git clone https://github.com/kneblewskitomasz-sys/field-from-above.git pole-z-gory
 cd pole-z-gory
 
 # The static demo: open demo/index.html in a browser (double-click is enough).

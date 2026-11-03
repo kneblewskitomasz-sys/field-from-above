@@ -1,7 +1,9 @@
 # What was built during the hackathon
 
-Event window: **27 October 2026 – 4 November 2026**. Submission deadline:
+Event window: **26 October 2026 – 4 November 2026** (work on this project started 27 October). Submission deadline:
 4 November 2026, 21:00 ET (5 November 2026, 03:00 Polish time).
+
+This public repository is a publication copy of work developed in a private repository from 27 October to 3 November 2026; the dates below identify the new work.
 
 Dates below come from the main project's git history:
 
