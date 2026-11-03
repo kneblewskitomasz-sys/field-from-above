@@ -21,10 +21,13 @@ To jest ograniczenie środowiska, nie źródła — zapisane w raporcie.
 
 from __future__ import annotations
 
+import http.server
 import json
 import math
 import os
 import re
+import socketserver
+import threading
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass
@@ -34,6 +37,12 @@ import numpy as np
 
 STAC = "https://earth-search.aws.element84.com/v1"
 KOLEKCJA = "sentinel-2-l2a"
+
+# Bez tych dwóch ustawień GDAL przy zdalnym COG próbuje listować katalog S3
+# i pobiera cały plik zamiast okna (zmierzone 02.11.2026: 5,8 MB SCL zamiast
+# ~20 kB okna). Ustawiamy je globalnie, bo dotyczą każdego odczytu COG.
+os.environ.setdefault("GDAL_DISABLE_READDIR_ON_OPEN", "EMPTY_DIR")
+os.environ.setdefault("CPL_VSIL_CURL_ALLOWED_EXTENSIONS", ".tif")
 
 # SCL: 4 roślinność, 5 gleba, 6 woda, 7 niesklasyfikowane; 3 cień, 8/9/10 chmury, 11 śnieg.
 SCL_CZYSTE = frozenset({4, 5, 6, 7})
@@ -46,7 +55,7 @@ PASMA_20M = {"B05": "rededge1", "SCL": "scl"}
 
 
 def _get(url: str, timeout: int = 90) -> bytes:
-    zadanie = urllib.request.Request(url, headers={"User-Agent": "pole-z-gory/1.0"})
+    zadanie = urllib.request.Request(url, headers={"User-Agent": "neuromentor-s152c/1.0"})
     return urllib.request.urlopen(zadanie, timeout=timeout).read()
 
 
@@ -60,7 +69,7 @@ def szukaj_scen(bbox: list[float], start: str, end: str, ile: int = 50) -> list[
     }).encode("utf-8")
     req = urllib.request.Request(
         STAC + "/search", data=cialo,
-        headers={"Content-Type": "application/json", "User-Agent": "pole-z-gory/1.0"})
+        headers={"Content-Type": "application/json", "User-Agent": "neuromentor-s152c/1.0"})
     return json.loads(urllib.request.urlopen(req, timeout=120).read())["features"]
 
 
@@ -285,3 +294,89 @@ def chmury_nad_dzialka(maska: np.ndarray, scl: np.ndarray) -> dict:
 
 def data_sceny(item: dict) -> str:
     return str(item["properties"]["datetime"])[:10]
+
+
+# ────────────────────────────────────────────────────────────────────────────
+# Lokalne przekierowanie HTTP — obejście schannel na tym laptopie
+# ────────────────────────────────────────────────────────────────────────────
+#
+# Zmierzone 02.11.2026: GDAL z tego koła (rasterio 3.12.1, libcurl/schannel)
+# nie otwiera COG po https — `AcquireCredentialsHandle failed:
+# SEC_E_NO_CREDENTIALS`. To nie jest wina S3: `urllib` (OpenSSL) czyta ten sam
+# plik bez problemu. Dlatego GDAL dostaje adres `http://127.0.0.1:port/<https>`,
+# a lokalny wątek przepisuje żądania (w tym Range) przez `urllib`. Ruch idzie
+# tylko na pętlę zwrotną; serwer żyje tyle, co przebieg.
+
+class _Przekierowanie(http.server.BaseHTTPRequestHandler):
+    def log_message(self, *_):  # cisza: nie zaśmiecamy logu przebiegu
+        pass
+
+    def do_HEAD(self):
+        self._obsluz(True)
+
+    def do_GET(self):
+        self._obsluz(False)
+
+    def _obsluz(self, head: bool):
+        url = urllib.parse.unquote(self.path[1:])
+        if not url.startswith(("http://", "https://")):
+            self.send_error(400, "adres nie jest http(s)")
+            return
+        naglowki = {"User-Agent": "neuromentor-s155a/1.0"}
+        zakres = self.headers.get("Range")
+        if zakres:
+            naglowki["Range"] = zakres
+        zadanie = urllib.request.Request(url, headers=naglowki,
+                                         method="HEAD" if head else "GET")
+        try:
+            with urllib.request.urlopen(zadanie, timeout=180) as odp:
+                self.send_response(odp.status)
+                for klucz in ("Content-Type", "Content-Length", "Content-Range",
+                              "Last-Modified", "ETag"):
+                    wartosc = odp.headers.get(klucz)
+                    if wartosc:
+                        self.send_header(klucz, wartosc)
+                self.send_header("Accept-Ranges", "bytes")
+                self.end_headers()
+                if not head:
+                    dl = int(odp.headers.get("Content-Length") or 0)
+                    pozostalo = dl
+                    while pozostalo > 0:
+                        porcja = odp.read(min(65536, pozostalo))
+                        if not porcja:
+                            break
+                        self.wfile.write(porcja)
+                        pozostalo -= len(porcja)
+        except Exception as blad:  # noqa: BLE001 — klient GDAL ma dostać kod, nie wyjątek
+            try:
+                self.send_error(502, str(blad).encode("ascii", "replace").decode("ascii"))
+            except Exception:  # noqa: BLE001 — klient już zamknął połączenie
+                pass
+
+
+class _SerwerPrzekierowania(socketserver.ThreadingMixIn, http.server.HTTPServer):
+    daemon_threads = True
+
+
+class Przekierowanie:
+    """Kontekst: start lokalnego proxy i tłumaczenie adresów COG na nie."""
+
+    def __init__(self):
+        self.serwer: _SerwerPrzekierowania | None = None
+        self.port: int | None = None
+
+    def __enter__(self):
+        self.serwer = _SerwerPrzekierowania(("127.0.0.1", 0), _Przekierowanie)
+        self.port = self.serwer.server_address[1]
+        threading.Thread(target=self.serwer.serve_forever, daemon=True).start()
+        return self
+
+    def adres(self, href: str) -> str:
+        if self.port is None:
+            raise RuntimeError("przekierowanie nie zostało uruchomione")
+        return f"http://127.0.0.1:{self.port}/{href}"
+
+    def __exit__(self, *_):
+        if self.serwer is not None:
+            self.serwer.shutdown()
+            self.serwer.server_close()

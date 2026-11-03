@@ -1,0 +1,32 @@
+{
+ "progi_ndvi": [
+  0.2,
+  0.35,
+  0.5,
+  0.7
+ ],
+ "klasy": [
+  "very low",
+  "low",
+  "medium",
+  "good",
+  "very good"
+ ],
+ "kolory": [
+  "#d73027",
+  "#fc8d59",
+  "#fee08b",
+  "#91cf60",
+  "#1a9850"
+ ],
+ "regula_terminow": "jeden termin na okres (kwiecień, maj/czerwiec, lipiec, październik); najwyższy odsetek czystych; remis → wcześniejsza data",
+ "prog_czystych_pct": 80.0,
+ "zlacze_dni": 45,
+ "werdykt": {
+  "min_pikseli": 100,
+  "prog_pct": 10.0,
+  "prog_percentyl": 95,
+  "permutacje": 1000,
+  "ziarno": 20261102
+ }
+}

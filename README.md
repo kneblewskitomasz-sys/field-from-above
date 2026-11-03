@@ -31,6 +31,14 @@ theme **Build for Your World**.
    what to check in the field, and what is uncertain. It is explicitly forbidden
    to invent numbers, recommend fertiliser, or call the result a soil test.
 
+5. **Season and terrain.** One date can lie, so the tool reads the whole 2026
+   season (Sentinel-2 scenes with at least 80% clear pixels over the parcel) and
+   draws an NDVI curve per parcel. A darker spot on one date must come back on
+   other dates (in at least 10% of its pixels) before the tool calls it a weak spot;
+   otherwise the verdict is **does not return** and the note says not to start
+   there. Terrain heights come from the national terrain model; an empty or
+   zero reading is shown as "no data", never as flat ground.
+
 The demo page puts the parcel picker, layer switcher, measurement cards, the
 model text and a "what 10 metres cannot tell you" panel in one static file.
 It opens from disk and makes **zero external requests**.
@@ -73,6 +81,8 @@ the stub):
 ```bash
 python -m pip install -r requirements.txt
 python test_sentinel.py       # numbers, clouds, grid, terrain - no network
+python test_historia.py       # season curve and weak-spot verdict - no network
+python test_teren_punkty.py   # terrain points inside the parcel
 ```
 
 `test_sentinel.py` needs NumPy, rasterio and Shapely; pyproj is used when
@@ -91,13 +101,17 @@ design.
 |-- sentinel.py              STAC search, COG reading, NDVI/NDRE, SCL clouds
 |-- mapy.py, orto.py         map and orthophoto rendering
 |-- teren.py                 terrain profile; "no data" is not "flat"
+|-- historia.py              season curve, weak-spot verdict, terrain map
 |-- uruchom_na_dzialkach.py  real-parcel run (needs the internal cache)
 |-- test_lancuch.py          chain cases
 |-- test_sentinel.py         index, cloud, grid and terrain checks
+|-- test_historia.py         season, verdict and terrain cases (19, no network)
+|-- test_teren_punkty.py     terrain points stay inside the drawn parcel (7)
+|-- demo/dane/               season and terrain data used by the page
 |-- demo/index.html          bilingual EN/PL demo page, no external resources
-|-- demo/img/                rendered maps (16 PNG files)
+|-- demo/img/                rendered maps (32 PNG files)
 |-- demo/uruchom_demo.py     offline launcher; explains the missing-key case
-|-- demo/dane.sha256         hash of the embedded DANE block (numbers unchanged)
+|-- demo/dane.sha256         hash of the single-date measurement data (2 Nov 2026)
 |-- dane/opisy_meta.json     stored API descriptions and costs (source of numbers)
 |-- BUILT-DURING-HACKATHON.md
 |-- THIRD-PARTY.md

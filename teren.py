@@ -21,25 +21,65 @@ SERWIS = "https://services.gugik.gov.pl/nmt/"
 
 
 def _get(url: str, timeout: int = 40) -> str:
-    req = urllib.request.Request(url, headers={"User-Agent": "pole-z-gory/1.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": "neuromentor-s152c/1.0"})
     return urllib.request.urlopen(req, timeout=timeout).read().decode("utf-8", "replace").strip()
+
+
+def odczyt(x2180: float, y2180: float, proby: int = 3) -> dict:
+    """Jeden odczyt NMT z jawnym statusem — brak odpowiedzi to nie wysokość 0.
+
+    Statusy: `ok` (liczba > 0), `zero` (serwis odpowiedział 0 — brak danych),
+    `pusto` (pusta/nie liczbowa odpowiedź), `blad` (sieć po `proby` próbach).
+    Rozdzielenie `zero`/`pusto` od `blad` jest potrzebne, żeby odróżnić
+    „GUGiK nie ma pokrycia” (wynik: BRAK DANYCH) od „usługa padła” (nie
+    nadpisujemy poprzedniego wyniku).
+    """
+    q = urllib.parse.urlencode({"request": "GetHByXY", "x": f"{x2180:.2f}", "y": f"{y2180:.2f}",
+                                "crs": "EPSG:2180"})
+    status = "blad"
+    for proba in range(max(1, proby)):
+        try:
+            t = _get(SERWIS + "?" + q)
+        except Exception:
+            status = "blad"
+            time.sleep(0.3 * (proba + 1))
+            continue
+        if re.fullmatch(r"-?\d+(?:[.,]\d+)?", t or ""):
+            h = float(t.replace(",", "."))
+            if h > 0:  # 0 = brak danych, nie teren na poziomie morza
+                return {"h_m": h, "status": "ok"}
+            # 0 to definitywna odpowiedź serwisu — nie ma sensu pytać trzy razy
+            return {"h_m": None, "status": "zero"}
+        status = "pusto"
+        break
+    return {"h_m": None, "status": status}
 
 
 def wysokosc(x2180: float, y2180: float, proby: int = 3) -> float | None:
     """Wysokość w jednym punkcie albo None (brak danych / odpowiedź nie liczbowa / 0)."""
-    q = urllib.parse.urlencode({"request": "GetHByXY", "x": f"{x2180:.2f}", "y": f"{y2180:.2f}",
-                                "crs": "EPSG:2180"})
-    for proba in range(proby):
-        try:
-            t = _get(SERWIS + "?" + q)
-        except Exception:
-            t = ""
-        if re.fullmatch(r"-?\d+(?:[.,]\d+)?", t or ""):
-            h = float(t.replace(",", "."))
-            if h > 0:  # 0 = brak danych, nie teren na poziomie morza
-                return h
-        time.sleep(0.3 * (proba + 1))
-    return None
+    return odczyt(x2180, y2180, proby=proby)["h_m"]
+
+
+def wysokosci_punktow(punkty2180: list[tuple[float, float]], watki: int = 8,
+                      proby: int = 3, cache: dict | None = None) -> list[dict]:
+    """Równoległy odczyt listy punktów. Cache (klucz `x,y`) oszczędza powtórki."""
+    from concurrent.futures import ThreadPoolExecutor
+
+    cache = cache if cache is not None else {}
+    wynik: list[dict | None] = [None] * len(punkty2180)
+
+    def _jeden(i: int):
+        x, y = punkty2180[i]
+        klucz = f"{x:.2f},{y:.2f}"
+        if klucz in cache:
+            return {"x2180": x, "y2180": y, **cache[klucz]}
+        r = odczyt(x, y, proby=proby)
+        return {"x2180": x, "y2180": y, **r}
+
+    with ThreadPoolExecutor(max_workers=max(1, watki)) as pula:
+        for i, r in zip(range(len(punkty2180)), pula.map(_jeden, range(len(punkty2180)))):
+            wynik[i] = r
+    return [r for r in wynik if r is not None]
 
 
 def punkty_w_dzialce(geom2180, odstep: float = 20.0, maks: int = 25) -> list[tuple[float, float]]:

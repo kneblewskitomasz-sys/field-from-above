@@ -17,9 +17,16 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 from matplotlib import patheffects  # noqa: E402
+from matplotlib.colors import BoundaryNorm, LinearSegmentedColormap, ListedColormap  # noqa: E402
 from matplotlib.lines import Line2D  # noqa: E402
 from matplotlib.patches import Patch  # noqa: E402
 from PIL import Image  # noqa: E402
+
+# Progi zapisane PRZED pierwszym uruchomieniem na danych (S155a, 02.11.2026).
+# Te same progi na każdym terminie i na każdej działce — inaczej mapy kłamią.
+PROGI_NDVI = [0.20, 0.35, 0.50, 0.70]
+KLASY_NDVI = ["very low", "low", "medium", "good", "very good"]
+KOLORY_NDVI = ["#d73027", "#fc8d59", "#fee08b", "#91cf60", "#1a9850"]
 
 # Klasy SAM: kolor konturu i wypełnienia (spójne z S147o, żeby dało się porównać)
 SAM_KOLORY = {
@@ -268,4 +275,189 @@ def rysuj_przeglad(sciezka_png, orto_png, bbox_orto, geometrie4326, maski_sam,
              fontsize=6.0, color="#444")
     fig.subplots_adjust(left=0.045, right=0.985, top=0.80, bottom=0.17, wspace=0.26)
     fig.savefig(sciezka_png, bbox_inches="tight")
+    plt.close(fig)
+
+
+# ────────────────────────────────────────────────────────────────────────────
+# S155a: sezon, krzywa, teren
+# ────────────────────────────────────────────────────────────────────────────
+
+def _mapa_klas():
+    cmap = ListedColormap(KOLORY_NDVI)
+    cmap.set_bad("white")
+    norm = BoundaryNorm([-1.0] + PROGI_NDVI + [2.0], cmap.N)
+    return cmap, norm
+
+
+def rysuj_sezon(sciezka_png, obrazy, maska, extent, terminy, tytul):
+    """2×2 terminy, jedna skala pięciu klas, tylko obszar działki (poza białe)."""
+    cmap, norm = _mapa_klas()
+    fig, osie = plt.subplots(2, 2, figsize=(9.4, 8.6), dpi=150)
+    for ax, arr, term in zip(osie.ravel(), obrazy, terminy):
+        pokaz = np.where(maska & np.isfinite(arr), arr, np.nan)
+        ax.set_facecolor("white")
+        ax.imshow(pokaz, extent=extent, origin="upper", cmap=cmap, norm=norm,
+                  interpolation="nearest")
+        ax.set_xticks([])
+        ax.set_yticks([])
+        for krawedz in ax.spines.values():
+            krawedz.set_visible(False)
+        ax.set_title(f"{term['data']}  ·  clean {term['czyste_pct']:.1f}%",
+                     fontsize=10.5, fontweight="bold", pad=5)
+    uchwyty = [Patch(facecolor=KOLORY_NDVI[0], label=f"very low  < {PROGI_NDVI[0]:.2f}"),
+               Patch(facecolor=KOLORY_NDVI[1], label=f"low  {PROGI_NDVI[0]:.2f}–{PROGI_NDVI[1]:.2f}"),
+               Patch(facecolor=KOLORY_NDVI[2], label=f"medium  {PROGI_NDVI[1]:.2f}–{PROGI_NDVI[2]:.2f}"),
+               Patch(facecolor=KOLORY_NDVI[3], label=f"good  {PROGI_NDVI[2]:.2f}–{PROGI_NDVI[3]:.2f}"),
+               Patch(facecolor=KOLORY_NDVI[4], label=f"very good  ≥ {PROGI_NDVI[3]:.2f}")]
+    fig.legend(handles=uchwyty, loc="lower center", ncol=5, fontsize=7.4,
+               frameon=False, bbox_to_anchor=(0.5, 0.035))
+    fig.suptitle(tytul, fontsize=13.0, fontweight="bold", x=0.04, ha="left", y=0.975)
+    fig.text(0.04, 0.012,
+             "Same thresholds on all four dates · NDVI from Sentinel-2 L2A · "
+             "colour only inside the parcel · white = outside parcel or cloud/nodata.",
+             fontsize=6.8, color="#444")
+    fig.subplots_adjust(left=0.02, right=0.98, top=0.90, bottom=0.13, wspace=0.04, hspace=0.12)
+    # Metadane w PNG: ta sama data i ten sam odsetek czystych, co w JSON.
+    opis = "dates=" + ";".join(f"{t['data']}:{t['czyste_pct']:.1f}" for t in terminy)
+    opis += "|thresholds=" + ",".join(f"{p:.2f}" for p in PROGI_NDVI)
+    fig.savefig(sciezka_png, bbox_inches="tight", facecolor="white",
+                metadata={"Description": opis})
+    plt.close(fig)
+
+
+def rysuj_krzywa(sciezka_png, punkty, segmenty, terminy, tytul):
+    """Średnia NDVI w czasie; przerwy w linii są jawne, bez interpolacji przez lukę."""
+    import matplotlib.dates as mdates
+    from datetime import date
+
+    fig, ax = plt.subplots(figsize=(9.6, 4.8), dpi=150)
+    for odcinek in segmenty:
+        if len(odcinek) >= 2:
+            ax.plot([p[0] for p in odcinek], [p[1] for p in odcinek],
+                    color="#1f5f8b", lw=1.7, zorder=2)
+    ax.scatter([p[0] for p in punkty], [p[1] for p in punkty],
+               s=18, color="#1f5f8b", zorder=3, label="accepted scene (mean NDVI)")
+    if terminy:
+        ax.scatter([date.fromisoformat(t["data"]) for t in terminy],
+                   [t["ndvi"] for t in terminy], s=120, marker="*",
+                   color="#d73027", zorder=5, label="date shown on the season map")
+        for t in terminy:
+            ax.annotate(t["data"][5:], (date.fromisoformat(t["data"]), t["ndvi"]),
+                        textcoords="offset points", xytext=(0, 9), ha="center",
+                        fontsize=7.2, color="#8b1a1a")
+    ax.set_title(tytul, fontsize=12.5, fontweight="bold", loc="left", pad=8)
+    ax.set_xlabel("Date (2026)", fontsize=9)
+    ax.set_ylabel("Mean NDVI inside parcel", fontsize=9)
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%d %b"))
+    ax.grid(alpha=0.25)
+    ax.legend(fontsize=7.6, loc="best")
+    if punkty:
+        wartosci = [p[1] for p in punkty]
+        ax.set_ylim(max(-0.05, min(wartosci) - 0.08), min(1.0, max(wartosci) + 0.10))
+    fig.text(0.01, 0.01,
+             "Line breaks at a gap longer than 45 days or a month without an accepted scene — "
+             "no interpolation through a gap.",
+             fontsize=6.8, color="#444")
+    fig.tight_layout(rect=(0, 0.03, 1, 1))
+    # Metadane w PNG: dokładnie te cztery daty z map, z NDVI z JSON.
+    opis = "map_dates=" + ";".join(
+        f"{t['data']}:{t['ndvi']:.4f}" for t in terminy if t.get("ndvi") is not None)
+    fig.savefig(sciezka_png, bbox_inches="tight", facecolor="white",
+                metadata={"Description": opis})
+    plt.close(fig)
+
+
+# ────────────────────────────────────────────────────────────────────────────
+# S155b2: kolor, który nie udaje tła, i punkty tylko z rysowanych pikseli
+# ────────────────────────────────────────────────────────────────────────────
+
+# `terrain` kończy się bielą. Przy vmin/vmax z danych najwyższy piksel był biały
+# jak papier, więc punkt C (najwyższy) wyglądał, jakby leżał poza kolorowym
+# obszarem — choć był w masce. Ucinamy górne 14% skali: maksimum jest brunatne,
+# a nie białe.
+_TERRAIN = plt.get_cmap("terrain")
+CMAP_TEREN = LinearSegmentedColormap.from_list(
+    "terrain_bez_bieli", _TERRAIN(np.linspace(0.0, 0.86, 256)))
+
+
+def kolor_terenu(frac: float) -> tuple[int, int, int]:
+    """Kolor skali terenu dla ułamka 0..1 (1 = najwyższy piksel). Do testu."""
+    r, g, b, _ = CMAP_TEREN(min(1.0, max(0.0, float(frac))))
+    return tuple(int(round(255 * c)) for c in (r, g, b))
+
+
+def sprawdz_punkty_na_mapie(punkty, arr, maska, extent):
+    """Każdy punkt A/B/C musi leżeć na pikselu, który mapa NAPRAWDĘ rysuje.
+
+    Rysowany piksel = w masce działki i ze skończoną wysokością. Punkt poza
+    maską albo na NaN to błąd, nie cichy znacznik na białym tle. Podnosi
+    ValueError z nazwą punktu — build/test ma paść głośno.
+    """
+    x0, x1, y0, y1 = extent
+    wys, szer = maska.shape
+    bledy = []
+    for klucz, p in punkty.items():
+        kol = int((p["x"] - x0) / (x1 - x0) * szer)
+        wier = int((y1 - p["y"]) / (y1 - y0) * wys)
+        if not (0 <= wier < wys and 0 <= kol < szer):
+            bledy.append("%s (%.1f, %.1f) poza kadrem mapy" % (klucz, p["x"], p["y"]))
+            continue
+        if not bool(maska[wier, kol]):
+            bledy.append("%s (%.1f, %.1f) poza maską działki" % (klucz, p["x"], p["y"]))
+        elif not np.isfinite(arr[wier, kol]):
+            bledy.append("%s (%.1f, %.1f) na pikselu bez wysokości" % (klucz, p["x"], p["y"]))
+    if bledy:
+        raise ValueError("punkty poza rysowanym obszarem: " + "; ".join(bledy))
+    return True
+
+
+def rysuj_teren(sciezka_png, arr, maska, extent, tytul, punkty, status):
+    """Kolor tylko w obrębie działki; BRAK DANYCH nie jest płaskim terenem."""
+    fig, ax = plt.subplots(figsize=(7.4, 5.8), dpi=150)
+    ax.set_facecolor("white")
+    opis_meta = f"status={status}"
+    if status != "OK":
+        ax.text(0.5, 0.5, "BRAK DANYCH", transform=ax.transAxes, ha="center", va="center",
+                fontsize=22, fontweight="bold", color="#b00020")
+        ax.text(0.5, 0.40, "GUGiK NMT did not return enough heights — this is not flat terrain.",
+                transform=ax.transAxes, ha="center", va="center", fontsize=9, color="#333")
+    else:
+        pokaz = np.where(maska & np.isfinite(arr), arr, np.nan)
+        vmin, vmax = float(np.nanmin(pokaz)), float(np.nanmax(pokaz))
+        if not np.isfinite(vmin) or not np.isfinite(vmax):
+            return rysuj_teren(sciezka_png, arr, maska, extent, tytul, punkty, "BRAK DANYCH")
+        # S155b2: najpierw sprawdź, że A/B/C leżą na pikselach rysowanych
+        # (maska + skończona wysokość); punkt na białym tle = błąd, nie ozdoba.
+        sprawdz_punkty_na_mapie(punkty, arr, maska, extent)
+        im = ax.imshow(pokaz, extent=extent, origin="upper", cmap=CMAP_TEREN,
+                       vmin=vmin, vmax=vmax, interpolation="nearest")
+        # cienki obrys działki: nawet najwyższy (jasny) piksel nie zlewa się z tłem
+        ax.contour(np.linspace(extent[0], extent[1], maska.shape[1]),
+                   np.linspace(extent[3], extent[2], maska.shape[0]),
+                   maska.astype(float), levels=[0.5], colors=["#40503f"],
+                   linewidths=0.9, zorder=4)
+        opis_meta += f";h_min={vmin:.2f};h_max={vmax:.2f};roznica={vmax - vmin:.2f}"
+        cb = fig.colorbar(im, ax=ax, fraction=0.035, pad=0.02)
+        cb.set_label("metres above sea level", fontsize=8.5)
+        cb.ax.tick_params(labelsize=7.5)
+        for klucz, p in punkty.items():
+            ax.plot(p["x"], p["y"], marker="o", markersize=7, color="black",
+                    markeredgecolor="white", markeredgewidth=1.4, zorder=6)
+            ax.annotate(f"{klucz}  {p['h_m']:.1f} m", (p["x"], p["y"]),
+                        textcoords="offset points", xytext=(8, 6), fontsize=8.8,
+                        fontweight="bold", color="black", zorder=7,
+                        path_effects=[patheffects.withStroke(linewidth=2.8, foreground="white")])
+    ax.set_title(tytul, fontsize=12.0, fontweight="bold", loc="left", pad=8)
+    ax.set_xticks([])
+    ax.set_yticks([])
+    for krawedz in ax.spines.values():
+        krawedz.set_visible(False)
+    ax.set_aspect("equal")
+    fig.text(0.01, 0.01,
+             "GUGiK NMT GetHByXY (EPSG:2180) · 10 m grid at parcel pixels · "
+             "A = lowest, B = nearest parcel centre, C = highest · outside parcel white.",
+             fontsize=6.6, color="#444")
+    fig.tight_layout(rect=(0, 0.03, 1, 1))
+    fig.savefig(sciezka_png, bbox_inches="tight", facecolor="white",
+                metadata={"Description": opis_meta})
     plt.close(fig)

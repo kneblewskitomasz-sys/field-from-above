@@ -1,0 +1,157 @@
+{
+ "90/8": {
+  "status": "OK",
+  "odstep_m": 10,
+  "n_punktow": 50,
+  "n_danych": 50,
+  "brak_pct": 0.0,
+  "h_min_m": 172.2,
+  "h_max_m": 173.4,
+  "roznica_m": 1.2,
+  "punkty": {
+   "A": {
+    "x": 688315.0,
+    "y": 5810345.0,
+    "h_m": 172.2
+   },
+   "B": {
+    "x": 688395.0,
+    "y": 5810365.0,
+    "h_m": 173.0
+   },
+   "C": {
+    "x": 688455.0,
+    "y": 5810395.0,
+    "h_m": 173.4
+   }
+  },
+  "zrodlo": "GUGiK NMT GetHByXY (EPSG:2180)",
+  "data_odczytu": "2026-11-02T19:05:11",
+  "png": "img/90-8-teren.png",
+  "uwaga": "0 albo pusta odpowiedź to brak danych, nie wysokość; >20% braków = BRAK DANYCH"
+ },
+ "90/12": {
+  "status": "OK",
+  "odstep_m": 10,
+  "n_punktow": 52,
+  "n_danych": 52,
+  "brak_pct": 0.0,
+  "h_min_m": 168.0,
+  "h_max_m": 170.5,
+  "roznica_m": 2.5,
+  "punkty": {
+   "A": {
+    "x": 687755.0,
+    "y": 5810195.0,
+    "h_m": 168.0
+   },
+   "B": {
+    "x": 687785.0,
+    "y": 5810215.0,
+    "h_m": 169.2
+   },
+   "C": {
+    "x": 687865.0,
+    "y": 5810235.0,
+    "h_m": 170.5
+   }
+  },
+  "zrodlo": "GUGiK NMT GetHByXY (EPSG:2180)",
+  "data_odczytu": "2026-11-02T19:05:11",
+  "png": "img/90-12-teren.png",
+  "uwaga": "0 albo pusta odpowiedź to brak danych, nie wysokość; >20% braków = BRAK DANYCH"
+ },
+ "92/6": {
+  "status": "OK",
+  "odstep_m": 10,
+  "n_punktow": 67,
+  "n_danych": 67,
+  "brak_pct": 0.0,
+  "h_min_m": 170.1,
+  "h_max_m": 172.3,
+  "roznica_m": 2.2,
+  "punkty": {
+   "A": {
+    "x": 688755.0,
+    "y": 5810375.0,
+    "h_m": 170.1
+   },
+   "B": {
+    "x": 688765.0,
+    "y": 5810425.0,
+    "h_m": 171.6
+   },
+   "C": {
+    "x": 688765.0,
+    "y": 5810475.0,
+    "h_m": 172.3
+   }
+  },
+  "zrodlo": "GUGiK NMT GetHByXY (EPSG:2180)",
+  "data_odczytu": "2026-11-02T19:05:11",
+  "png": "img/92-6-teren.png",
+  "uwaga": "0 albo pusta odpowiedź to brak danych, nie wysokość; >20% braków = BRAK DANYCH"
+ },
+ "92/10": {
+  "status": "OK",
+  "odstep_m": 10,
+  "n_punktow": 292,
+  "n_danych": 292,
+  "brak_pct": 0.0,
+  "h_min_m": 170.7,
+  "h_max_m": 173.3,
+  "roznica_m": 2.6,
+  "punkty": {
+   "A": {
+    "x": 688685.0,
+    "y": 5810355.0,
+    "h_m": 170.7
+   },
+   "B": {
+    "x": 688635.0,
+    "y": 5810445.0,
+    "h_m": 172.4
+   },
+   "C": {
+    "x": 688515.0,
+    "y": 5810425.0,
+    "h_m": 173.3
+   }
+  },
+  "zrodlo": "GUGiK NMT GetHByXY (EPSG:2180)",
+  "data_odczytu": "2026-11-02T19:05:12",
+  "png": "img/92-10-teren.png",
+  "uwaga": "0 albo pusta odpowiedź to brak danych, nie wysokość; >20% braków = BRAK DANYCH"
+ },
+ "92/11": {
+  "status": "OK",
+  "odstep_m": 10,
+  "n_punktow": 31,
+  "n_danych": 31,
+  "brak_pct": 0.0,
+  "h_min_m": 172.3,
+  "h_max_m": 173.2,
+  "roznica_m": 0.9,
+  "punkty": {
+   "A": {
+    "x": 688735.0,
+    "y": 5810505.0,
+    "h_m": 172.3
+   },
+   "B": {
+    "x": 688715.0,
+    "y": 5810535.0,
+    "h_m": 172.8
+   },
+   "C": {
+    "x": 688695.0,
+    "y": 5810555.0,
+    "h_m": 173.2
+   }
+  },
+  "zrodlo": "GUGiK NMT GetHByXY (EPSG:2180)",
+  "data_odczytu": "2026-11-02T19:05:12",
+  "png": "img/92-11-teren.png",
+  "uwaga": "0 albo pusta odpowiedź to brak danych, nie wysokość; >20% braków = BRAK DANYCH"
+ }
+}

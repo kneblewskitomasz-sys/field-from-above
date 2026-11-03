@@ -1,0 +1,312 @@
+{
+ "progi": {
+  "min_pikseli": 100,
+  "prog_pct": 10.0,
+  "prog_percentyl": 95,
+  "permutacje": 1000,
+  "ziarno": 20261102
+ },
+ "regula": "Najsłabsze 25% pikseli w każdym z 4 terminów; WRACA, gdy odsetek pikseli słabych w ≥3 terminach wynosi ≥10% i przekracza 95. percentyl permutacji (1000 prób, stałe ziarno); n<100 → ZA MAŁO PIKSELI.",
+ "dzialki": {
+  "90/8": {
+   "n_wspolnych": 50,
+   "odsetek_w_3z4": 4.0,
+   "liczba_pikseli_w_3z4": 2,
+   "przypadek": {
+    "permutacje": 1000,
+    "ziarno": 20261102,
+    "srednia_pct": 4.6,
+    "p95_pct": 8.0,
+    "p_value": 0.7213,
+    "prog_pct": 10.0,
+    "prog_percentyl": 95
+   },
+   "korelacja_wysokosc_ndvi": [
+    {
+     "data": "2026-04-01",
+     "okres": "April",
+     "n": 50,
+     "rho": 0.4689
+    },
+    {
+     "data": "2026-05-01",
+     "okres": "May/June",
+     "n": 50,
+     "rho": -0.0231
+    },
+    {
+     "data": "2026-07-02",
+     "okres": "July",
+     "n": 50,
+     "rho": -0.3774
+    },
+    {
+     "data": "2026-10-01",
+     "okres": "October",
+     "n": 50,
+     "rho": 0.5462
+    }
+   ],
+   "werdykt": "ZA MAŁO PIKSELI",
+   "regula": "ZA MAŁO PIKSELI gdy n<100; WRACA gdy odsetek>=10% i > p95 przypadku; w przeciwnym razie NIE WRACA",
+   "terminy": [
+    {
+     "data": "2026-04-01",
+     "czyste_pct": 100.0
+    },
+    {
+     "data": "2026-05-01",
+     "czyste_pct": 100.0
+    },
+    {
+     "data": "2026-07-02",
+     "czyste_pct": 100.0
+    },
+    {
+     "data": "2026-10-01",
+     "czyste_pct": 100.0
+    }
+   ]
+  },
+  "90/12": {
+   "n_wspolnych": 52,
+   "odsetek_w_3z4": 3.8,
+   "liczba_pikseli_w_3z4": 2,
+   "przypadek": {
+    "permutacje": 1000,
+    "ziarno": 20261102,
+    "srednia_pct": 5.1,
+    "p95_pct": 9.6,
+    "p_value": 0.8052,
+    "prog_pct": 10.0,
+    "prog_percentyl": 95
+   },
+   "korelacja_wysokosc_ndvi": [
+    {
+     "data": "2026-04-01",
+     "okres": "April",
+     "n": 52,
+     "rho": 0.8842
+    },
+    {
+     "data": "2026-05-01",
+     "okres": "May/June",
+     "n": 52,
+     "rho": 0.1107
+    },
+    {
+     "data": "2026-07-02",
+     "okres": "July",
+     "n": 52,
+     "rho": -0.155
+    },
+    {
+     "data": "2026-10-01",
+     "okres": "October",
+     "n": 52,
+     "rho": 0.1278
+    }
+   ],
+   "werdykt": "ZA MAŁO PIKSELI",
+   "regula": "ZA MAŁO PIKSELI gdy n<100; WRACA gdy odsetek>=10% i > p95 przypadku; w przeciwnym razie NIE WRACA",
+   "terminy": [
+    {
+     "data": "2026-04-01",
+     "czyste_pct": 100.0
+    },
+    {
+     "data": "2026-05-01",
+     "czyste_pct": 100.0
+    },
+    {
+     "data": "2026-07-02",
+     "czyste_pct": 100.0
+    },
+    {
+     "data": "2026-10-01",
+     "czyste_pct": 100.0
+    }
+   ]
+  },
+  "92/6": {
+   "n_wspolnych": 67,
+   "odsetek_w_3z4": 7.5,
+   "liczba_pikseli_w_3z4": 5,
+   "przypadek": {
+    "permutacje": 1000,
+    "ziarno": 20261102,
+    "srednia_pct": 5.4,
+    "p95_pct": 9.0,
+    "p_value": 0.2597,
+    "prog_pct": 10.0,
+    "prog_percentyl": 95
+   },
+   "korelacja_wysokosc_ndvi": [
+    {
+     "data": "2026-04-01",
+     "okres": "April",
+     "n": 67,
+     "rho": 0.7455
+    },
+    {
+     "data": "2026-05-01",
+     "okres": "May/June",
+     "n": 67,
+     "rho": -0.3416
+    },
+    {
+     "data": "2026-07-02",
+     "okres": "July",
+     "n": 67,
+     "rho": -0.0864
+    },
+    {
+     "data": "2026-10-01",
+     "okres": "October",
+     "n": 67,
+     "rho": 0.2987
+    }
+   ],
+   "werdykt": "ZA MAŁO PIKSELI",
+   "regula": "ZA MAŁO PIKSELI gdy n<100; WRACA gdy odsetek>=10% i > p95 przypadku; w przeciwnym razie NIE WRACA",
+   "terminy": [
+    {
+     "data": "2026-04-01",
+     "czyste_pct": 100.0
+    },
+    {
+     "data": "2026-05-01",
+     "czyste_pct": 100.0
+    },
+    {
+     "data": "2026-07-02",
+     "czyste_pct": 100.0
+    },
+    {
+     "data": "2026-10-01",
+     "czyste_pct": 100.0
+    }
+   ]
+  },
+  "92/10": {
+   "n_wspolnych": 292,
+   "odsetek_w_3z4": 7.5,
+   "liczba_pikseli_w_3z4": 22,
+   "przypadek": {
+    "permutacje": 1000,
+    "ziarno": 20261102,
+    "srednia_pct": 5.1,
+    "p95_pct": 6.8,
+    "p_value": 0.026,
+    "prog_pct": 10.0,
+    "prog_percentyl": 95
+   },
+   "korelacja_wysokosc_ndvi": [
+    {
+     "data": "2026-04-01",
+     "okres": "April",
+     "n": 292,
+     "rho": 0.5161
+    },
+    {
+     "data": "2026-05-01",
+     "okres": "May/June",
+     "n": 292,
+     "rho": 0.0022
+    },
+    {
+     "data": "2026-07-02",
+     "okres": "July",
+     "n": 292,
+     "rho": 0.0835
+    },
+    {
+     "data": "2026-10-01",
+     "okres": "October",
+     "n": 292,
+     "rho": 0.2689
+    }
+   ],
+   "werdykt": "NIE WRACA",
+   "regula": "ZA MAŁO PIKSELI gdy n<100; WRACA gdy odsetek>=10% i > p95 przypadku; w przeciwnym razie NIE WRACA",
+   "terminy": [
+    {
+     "data": "2026-04-01",
+     "czyste_pct": 100.0
+    },
+    {
+     "data": "2026-05-01",
+     "czyste_pct": 100.0
+    },
+    {
+     "data": "2026-07-02",
+     "czyste_pct": 100.0
+    },
+    {
+     "data": "2026-10-01",
+     "czyste_pct": 100.0
+    }
+   ]
+  },
+  "92/11": {
+   "n_wspolnych": 31,
+   "odsetek_w_3z4": 16.1,
+   "liczba_pikseli_w_3z4": 5,
+   "przypadek": {
+    "permutacje": 1000,
+    "ziarno": 20261102,
+    "srednia_pct": 5.5,
+    "p95_pct": 9.7,
+    "p_value": 0.006,
+    "prog_pct": 10.0,
+    "prog_percentyl": 95
+   },
+   "korelacja_wysokosc_ndvi": [
+    {
+     "data": "2026-04-01",
+     "okres": "April",
+     "n": 31,
+     "rho": -0.7299
+    },
+    {
+     "data": "2026-05-01",
+     "okres": "May/June",
+     "n": 31,
+     "rho": -0.3108
+    },
+    {
+     "data": "2026-07-02",
+     "okres": "July",
+     "n": 31,
+     "rho": -0.1504
+    },
+    {
+     "data": "2026-10-01",
+     "okres": "October",
+     "n": 31,
+     "rho": 0.1437
+    }
+   ],
+   "werdykt": "ZA MAŁO PIKSELI",
+   "regula": "ZA MAŁO PIKSELI gdy n<100; WRACA gdy odsetek>=10% i > p95 przypadku; w przeciwnym razie NIE WRACA",
+   "terminy": [
+    {
+     "data": "2026-04-01",
+     "czyste_pct": 100.0
+    },
+    {
+     "data": "2026-05-01",
+     "czyste_pct": 100.0
+    },
+    {
+     "data": "2026-07-02",
+     "czyste_pct": 100.0
+    },
+    {
+     "data": "2026-10-01",
+     "czyste_pct": 100.0
+    }
+   ]
+  }
+ }
+}
