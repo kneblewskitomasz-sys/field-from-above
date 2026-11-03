@@ -21,6 +21,8 @@ exception (the NDVI pattern, see below).
 | **2026-11-01 22:35** (`4444e5df`) | Real-data path: `sentinel.py` (STAC search, B04/B05/B08/SCL, NDVI/NDRE, cloud mask), `adapter.py` (cached rasters, ULDK masks, stored descriptions), `uruchom_na_dzialkach.py` (five real parcels + cloud failure test), `mapy.py` / `orto.py` / `teren.py`, `test_sentinel.py`; the first demo page and 16 rendered PNG maps (`demo/img/`); the report `raport_lancuch.json` and its log. | commit `4444e5df` |
 | **2026-11-02** (working tree, not committed in the main project) | Demo descriptions updated to the **3/5** local result (92/10 passed; 92/6 and 92/11 rejected), `demo/index.html` data block updated. | `git status`, 2026-11-02 |
 | **2026-11-02** (this publication copy) | English `README.md`, `BUILT-DURING-HACKATHON.md`, `LICENSE`, `THIRD-PARTY.md`, the offline launcher `demo/uruchom_demo.py`, and the bilingual EN/PL page (default English). | this directory |
+| **2026-11-02** (main project, published 2026-11-03) | Season and terrain: `historia.py` (2026 season, scenes with ≥80% clear pixels, weak-spot verdict with a 10% threshold fixed before the measurement), terrain map from the national model, Season and Terrain tabs, `test_historia.py` (19) and `test_teren_punkty.py` (7), 16 new PNG maps. | commit `0bd4bd2` |
+| **2026-11-03** | English verdict label in the Season tab; repository and GitHub Pages published; demo video finished (boundary slide, repository link and date on the end card). | commit `4f89a15` and this commit |
 
 ## What predates 26 October 2026 — named explicitly
 
@@ -48,7 +50,7 @@ These files exist in the main project but are excluded here on purpose:
 - `raport_lancuch.log` — a run log with local paths;
 - `__pycache__/` — Python bytecode.
 
-The demo page, the 16 PNG maps and the four chain modules are the same files as
+The demo page, the PNG maps and the four chain modules are the same files as
 in the main project, except for the English/Polish translation layer in
 `demo/index.html` and a portability fix in the two test files (stdout is forced
 to UTF-8 so the tests run on a Windows console that is not UTF-8).
