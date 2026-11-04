@@ -1,5 +1,9 @@
 # Field from Above
 
+**▶ [Watch the demo video](https://youtu.be/n3nTe37zQ1I)** · **🌐 [Open the live demo — no installation](https://kneblewskitomasz-sys.github.io/field-from-above/demo/)**
+
+**Field from Above** is a local-first demo that turns a Polish parcel number into a dated, cloud-masked Sentinel-2 NDVI/NDRE map, an orthophoto with SAM 3.1 segmentation masks, and a short field note written by a Meta model — Muse Glimmer 30B locally, with its descriptions fact-checked against the measured numbers, or Muse Spark 1.3 through the API.
+
 **From a satellite image to the first furrow you check.**
 
 A local-first demo that turns the boundary of a Polish parcel into a dated,
@@ -51,6 +55,20 @@ It opens from disk and makes **zero external requests**.
   failure paths - not a mock with pretty numbers.
 - **A local-first builder** looking for a pattern where the field image and the
   parcel data stay on the owner's machine.
+
+## Beyond Poland
+
+The parcel boundary enters as one geometry, not as a Polish-only branch.
+`historia.py` (`geometrie`, `przygotuj_siatke`) reads each parcel as WKT from
+`demo/dane/dzialki.json`, and `sentinel.py:maska_dzialki()` rasterizes that
+geometry onto the 10 m grid used by the measurement. A boundary from another
+cadastre (for example a GeoJSON polygon) enters at the same point; Sentinel-2 and
+the Meta models are not tied to Poland.
+
+What is not here: the ULDK lookup itself. This repository takes pre-computed
+masks (`adapter.py: SegmentatorULDK`) and WKT, so replacing the cadastre means
+supplying that WKT, not editing the chain. The grid CRS is fixed to EPSG:32633
+(`sentinel.Siatka`), so a parcel outside UTM 33N needs that one setting changed.
 
 ## Quick start (from zero)
 
